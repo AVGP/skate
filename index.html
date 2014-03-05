@@ -30,7 +30,13 @@
     <ul class="toc"></ul>
     <div class="container">
       <h2 id="heading-why">Why?</h2>
-      <p>Skate is heavily inspired by the <a class="external" href="https://github.com/csuwildcat/SelectorListener">SelectorListener</a> technique by Daniel Buchner. Currently, the only way to accomplish handling elements added to the DOM is by using <a class="external" href="https://developer.mozilla.org/en/docs/Web/API/MutationObserver">Mutation Observers</a> which are are only available in the <a class="external" href="https://developer.mozilla.org/en/docs/Web/API/MutationObserver#Browser_compatibility">greenest</a> of evergreen browsers and they don't work with CSS selectors. Contrary to Mutation Observers, this technique uses CSS animation keyframes to notify handlers about elements that are added to the DOM. This works for both new elements and existing elements alike, is very performant and gives us the added benefit of natively supporting CSS selectors.</p>
+      <p>Skate is heavily inspired by the <a class="external" href="https://github.com/csuwildcat/SelectorListener">SelectorListener</a> technique by Daniel Buchner. It allows you apply lifecycle events - similar to web component lifecycle callbacks - to existing and dynamically added elements using a CSS selector.</p>
+
+      <h2 id="heading-installing">Installing</h2>
+      <p>You can install Skate using <a class="external" href="http://bower.io/">Bower</a> or by downloading the source from the <a class="external" href="https://github.com/treshugart/skate/tree/lifecycle">repository</a>.</p>
+      <pre code="bash">
+        bower install https://github.com/treshugart/skate/archive/lifecycle.zip
+      </pre>
 
       <h2 id="heading-usage">Usage</h2>
       <p>Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and component handler to a function. A component is simply a function that takes a DOM element as its only argument.</p>
@@ -120,7 +126,7 @@
 
 
       <h2 id="more">Events</h2>
-      <p>All handlers are bound to events that get triggered on each skate instance.</p>
+      <p>Events are modelled after the web components lifecycle callbacks. All handlers are bound to events that get triggered on each skate instance.</p>
 
       <h3><code>ready</code></h3>
       <p>The <code>ready</code> event is triggered before an element is shown in the DOM. This is the default event if implicitly binding.</p>
