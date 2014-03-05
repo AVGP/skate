@@ -1,0 +1,10 @@
+{
+  "name": "skate",
+  "_cacheHeaders": {
+    "Content-Type": "application/zip",
+    "Content-Disposition": "attachment; filename=skate-lifecycle.zip"
+  },
+  "_source": "https://github.com/treshugart/skate/archive/lifecycle.zip",
+  "_target": "*",
+  "_originalSource": "https://github.com/treshugart/skate/archive/lifecycle.zip"
+}
