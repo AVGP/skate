@@ -49,6 +49,19 @@
       </pre>
 
 
+      <h2 id="more">Events</h2>
+      <p>Events are modelled after the web components lifecycle callbacks. All handlers are bound to events that get triggered on each skate instance.</p>
+
+      <h3><code>ready</code></h3>
+      <p>The <code>ready</code> event is triggered before an element is shown in the DOM. This is the default event if implicitly binding.</p>
+
+      <h3><code>insert</code></h3>
+      <p>The <code>insert</code> event is triggered after an element is shown in the DOM.</p>
+
+      <h3><code>remove</code></h3>
+      <p>The <code>remove</code> event is triggered after an element is removed from the DOM.</p>
+
+
       <h2 id="heading-compatibility">Compatibility</h2>
       <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
 
@@ -129,19 +142,6 @@
       </pre>
 
       <p class="alert alert-info">One thing you may have noticed is that <code>listen()</code> is explicitly called where the second argument to <code>skate()</code> is not defined. This is because, if you pass the second argument, <code>listen()</code> is implicitly called after the listeners are bound. This makes the most common use case simpler and allows you to get around that in an elegant way if necessary.</p>
-
-
-      <h2 id="more">Events</h2>
-      <p>Events are modelled after the web components lifecycle callbacks. All handlers are bound to events that get triggered on each skate instance.</p>
-
-      <h3><code>ready</code></h3>
-      <p>The <code>ready</code> event is triggered before an element is shown in the DOM. This is the default event if implicitly binding.</p>
-
-      <h3><code>insert</code></h3>
-      <p>The <code>insert</code> event is triggered after an element is shown in the DOM.</p>
-
-      <h3><code>remove</code></h3>
-      <p>The <code>remove</code> event is triggered after an element is removed from the DOM.</p>
 
 
       <h2 id="heading-examples">Examples</h2>
