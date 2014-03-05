@@ -32,11 +32,13 @@
       <h2 id="heading-why">Why?</h2>
       <p>Skate allows you to apply lifecycle events - similar to <a class="external" href="http://www.w3.org/TR/components-intro/#lifecycle-callbacks">web component lifecycle callbacks</a> - to existing and dynamically added elements using CSS selectors.</p>
 
+
       <h2 id="heading-installing">Installing</h2>
       <p>You can install Skate using <a class="external" href="http://bower.io/">Bower</a> or by downloading the source from the <a class="external" href="https://github.com/treshugart/skate/tree/lifecycle">repository</a>.</p>
       <pre code="bash">
         bower install https://github.com/treshugart/skate/archive/lifecycle.zip
       </pre>
+
 
       <h2 id="heading-usage">Usage</h2>
       <p>Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and component handler to a function. A component is simply a function that takes a DOM element as its only argument.</p>
@@ -45,6 +47,11 @@
           // your component initialisation here
         });
       </pre>
+
+
+      <h2 id="heading-compatibility">Compatibility</h2>
+      <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
+
 
       <h2 id="components">Components</h2>
       <p>The simplest way to create a component is by passing a selector and a function to the <code>skate()</code> function. However, if you would like to bind to another event besides <code>ready</code> or bind to several events at once, you may also pass an object.</p>
@@ -137,25 +144,8 @@
       <p>The <code>remove</code> event is triggered after an element is removed from the DOM.</p>
 
 
-      <h2 id="heading-compatibility">Compatibility</h2>
-      <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
-
-
       <h2 id="heading-examples">Examples</h2>
-
       <p>There's tons of things you can do with Skate.</p>
-
-      <!--
-      <h3 id="heading-integrating-with-amd">Integrating with AMD</h3>
-      <p>You can automate the loading and setup of components written as an AMD module.</p>
-      <pre code="javascript">
-        skate('[data-component]', function(el, done) {
-          require([el.getAttribute('data-component')], function(amdComponentDefinition) {
-            done();
-          });
-        });
-      </pre>
-      -->
 
       <h3 id="heading-integrating-frameworks">Integrating Frameworks</h3>
       <p>If you like frameworks like Knockout, you can organise the setup logic into a component.</p>
