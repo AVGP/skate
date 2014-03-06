@@ -7,17 +7,6 @@
     <script src="bower_components/less/dist/less-1.6.2.js"></script>
     <script src="bower_components/highlightjs/highlight.pack.js"></script>
     <script src="bower_components/requirejs/require.js" data-main="js/main"></script>
-    <script>
-      ko = {
-        applyBindings: function(){},
-        observable: function(){}
-      };
-    </script>
-    <script>
-      require(['app'], function (app) {
-        app();
-      });
-    </script>
   </head>
   <body>
     <a href="https://github.com/treshugart/skate"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
@@ -30,7 +19,7 @@
     <ul class="toc"></ul>
     <div class="container">
       <h2 id="heading-why">Why?</h2>
-      <p>Skate allows you to apply lifecycle events - similar to <a class="external" href="http://www.w3.org/TR/components-intro/#lifecycle-callbacks">web component lifecycle callbacks</a> - to existing and dynamically added elements using CSS selectors.</p>
+      <p>Skate allows you to build components from any DOM element whether or not they already exist in the DOM, or are dynamically added at a later time.</p>
 
 
       <h2 id="heading-installing">Installing</h2>
@@ -41,174 +30,142 @@
 
 
       <h2 id="heading-usage">Usage</h2>
-      <p>Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and component handler to a function. A component is simply a function that takes a DOM element as its only argument.</p>
+      <p>Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and a component.</p>
       <pre code="javascript">
-        var component = skate('css[selector]', function(element) {
+        skate('css[selector]', function(element) {
           // your component initialisation here
         });
       </pre>
+      <p>A component, as illustrated above, can be a function or as we have below, an object.</p>
+      <pre code="javascript">
+        var component = skate('css[selector]', {
+          // Whether or not to automatically start listening. Defaults to true.
+          // If false, then you must manually call listen() on the Skate
+          // instance.
+          listen: true,
+
+          // Called prior to showing the element.
+          ready: function(element) {
+
+          },
+
+          // Called after the element is shown in the DOM.
+          inserted: function(element) {
+
+          },
+
+          // Called after the element is removed from the DOM.
+          removed: function(element) {
+
+          }
+        });
+      </pre>
+      <p>Skate returns an instance which you can call methods on and get information from.</p>
+      <pre code="javascript">
+        // The adapter that is currently being used to listen for changes.
+        component.adapter;
+
+        // Contains an array of DOM elements which are currently bound to the component.
+        component.elements;
+
+        // Returns whether or not the component is listening for DOM elements.
+        component.listening;
+
+        // A requestAnimationFrame or setTimeout reference that listens for DOM
+        // elements being removed.
+        component.removeListener;
+
+        // The selector that was used to define the component.
+        component.selector;
+
+        // Tells the component to stop listening if it is.
+        component.deafen();
+
+        // Tells the component to start listening if it isn't.
+        component.listen();
+      </pre>
 
 
-      <h2 id="more">Events</h2>
-      <p>Events are modelled after the web components lifecycle callbacks. All handlers are bound to events that get triggered on each skate instance.</p>
-
-      <h3><code>ready</code></h3>
-      <p>The <code>ready</code> event is triggered before an element is shown in the DOM. This is the default event if implicitly binding.</p>
-
-      <h3><code>insert</code></h3>
-      <p>The <code>insert</code> event is triggered after an element is shown in the DOM.</p>
-
-      <h3><code>remove</code></h3>
-      <p>The <code>remove</code> event is triggered after an element is removed from the DOM.</p>
+      <p class="alert alert-info">A component's lifecycle callbacks are modelled after the lifecycle callbacks in the <a class="external" href="http://www.w3.org/TR/components-intro/#lifecycle-callbacks">Web Components Specification</a>.</p>
 
 
       <h2 id="heading-compatibility">Compatibility</h2>
       <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
 
 
-      <h2 id="components">Components</h2>
-      <p>The simplest way to create a component is by passing a selector and a function to the <code>skate()</code> function. However, if you would like to bind to another event besides <code>ready</code> or bind to several events at once, you may also pass an object.</p>
-
-      <p>Binding to <code>insert</code> rather than <code>ready</code>:</p>
-      <pre code="javascript">
-        skate('div', {
-          insert: function(el) {
-
-          }
-        });
-      </pre>
-
-      <p>Binding multiple events:</p>
-      <pre code="javascript">
-        skate('div', {
-          ready: function(el) {
-
-          },
-
-          insert: function(el) {
-
-          }
-        });
-      </pre>
-
-      <p>You may also specify these as separate handlers:</p>
-      <pre code="javascript">
-        var component = skate('div');
-
-        component.on('ready', function(el) {
-
-        });
-
-        component.on('insert', function(el) {
-
-        });
-
-        // If you don't pass a component as the second argument
-        // you must explicitly call "listen()".
-        component.listen();
-      </pre>
-
-      <p>Depending on how you write your components, it may be easier for you to bulk add them.</p>
-      <pre code="javascript">
-        var component = skate('div');
-
-        var component1 = function() {
-          this.ready = function(el) {
-
-          };
-        };
-
-        var component2 = {
-          insert: function(el) {
-
-          }
-        };
-
-        var component3 = function(el) {
-
-        };
-
-        // Explicitly bound to the "ready" event.
-        component.add(new component1);
-
-        // Explicitly bound to the "insert" event.
-        component.add(component2);
-
-        // Implicitly bound to the "ready" event.
-        component.add(component3);
-
-        // Start listening for elements.
-        component.listen();
-      </pre>
-
-      <p class="alert alert-info">One thing you may have noticed is that <code>listen()</code> is explicitly called where the second argument to <code>skate()</code> is not defined. This is because, if you pass the second argument, <code>listen()</code> is implicitly called after the listeners are bound. This makes the most common use case simpler and allows you to get around that in an elegant way if necessary.</p>
-
-
       <h2 id="heading-examples">Examples</h2>
-      <p>There's tons of things you can do with Skate.</p>
+      <p>You can do pretty much anything you want with skate from building a simple date picker to building an entire framework like Polymer. The following examples cover a range of ideas that are possible.</p>
 
-      <h3 id="heading-integrating-frameworks">Integrating Frameworks</h3>
-      <p>If you like frameworks like Knockout, you can organise the setup logic into a component.</p>
+
+      <h3 id="heading-examples-hello">Hello World</h3>
+      <p>In the obligatory Hello World example, we write a component that takes the value of the <code>hello</code> property to print out "Hello, World!"</p>
       <pre code="javascript">
-        skate('[model]', function(el) {
-          ko.applyBindings(window[el.getAttribute('model')], el);
-        });
-      </pre>
-      <p>Then you can declaratively activate it on the element of your choice.</p>
-      <pre code="html">
-        <script>
-          window.myModel = {
-            hello: ko.observable()
-          };
-        </script>
-
-        <p model="myModel">Hello, <span data-bind="text: hello"></span>!</p>
-      </pre>
-
-      <h3 id="heading-templating">Templating</h3>
-      <p>You can even create components that will render templates.</p>
-      <pre code="javascript">
-        skate('[template]', function(el) {
-          var temp = Handlebars.compile(document.getElementById(el.getAttribute('template')));
-          var data = window[el.getAttribute('template-data')] || {};
-          el.innerHTML = temp(data);
+        skate('[hello]', function(el) {
+          el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
         });
       </pre>
       <pre code="html">
-        <script type="text/javascript">
-          window.context = {
-            hello: 'World'
-          };
-        </script>
-
-        <script type="text/handlebars" id="hello">
-          Hello, {{hello}}!
-        </script>
-
-        <div template="hello" template-data="context"></div>
+        <p hello="World"></p>
       </pre>
 
-      <h3 id="heading-nesting-components">Nesting Components</h3>
-      <p>Since components activate once they hit the DOM, this means you can nest components within each other and they just work.</p>
-      <pre code="html">
-        <tabs>
-          <tab pane="tab1">Tab 1</tab>
-          <tab pane="tab2">Tab 2</tab>
-          <pane tab="tab1">Tab 1 content.</pane>
-          <pane tab="tab2">Tab 2 content.</pane>
-        </tabs>
-      </pre>
-      <p>Your selector places restrictions on whether a component is valid within a given hierarchy.</p>
+
+      <h3 id="heading-examples-amd">Dynamic AMD Invocation</h3>
+      <p>The following example shows how you can create a component which loads another component and then creates a new instance which applies that loaded component.</p>
       <pre code="javascript">
-        skate('tabs > tab', function() {
-          // get tabby with it
-        });
+        // Keep track of which modules are loaded so that we don't load and
+        // initialise the same module more than once.
+        var loaded = [];
 
-        skate('tabs > pane', function() {
-          // cause some pane
+        skate('[module]', function(el, done) {
+          var path = el.getAttribute('module');
+          var alreadyLoaded = loaded.indexOf(path) !== -1;
+
+          // We don't want to load the module more than once since after
+          // loading, a new component is created that will automatically
+          // initialise any new elements with the module that was loaded
+          // in this component.
+          if (alreadyLoaded) {
+            return;
+          }
+
+          // Get the module and create a new component which will automatically
+          // register any new elements that want the same component.
+          require([path], function(module) {
+            skate('[module="' + path + '"]', module);
+          });
         });
+      </pre>
+      <p>You can then write HTML to dynamically load a component which is subsequently applied to your existing element.</p>
+      <pre code="html">
+        <p module="hello/world" hello="World"></p>
+      </pre>
+      <p>In <code>hello/world.js</code>:</p>
+      <pre code="javascript">
+        skate('[hello]', function(el) {
+          el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
+        });
+      </pre>
+
+
+      <h3 id="heading-examples-ko">Automatically Binding KnockoutJS</h3>
+      <p>Knockout is a pretty cool framework, but unfortuately it can't autobind itself. With Skate, we can automate that process.</p>
+      <pre code="javascript">
+        skate('[ko]', function(el) {
+          ko.applyBindings(window[el.getAttribute('ko')], el);
+        });
+      </pre>
+      <p>Having your model in the global namespace may not be the best idea, but for the sake of brevity here it is:</p>
+      <pre code="javascript">
+        window.myAwesomeViewModel = {
+          hello: 'World'
+        };
+      </pre>
+      <p>All you've got to do then is tell your element which model you want to bind it to.</p>
+      <pre code="html">
+        <p ko="myAwesomeViewModel">Hello, <span data-bind="text: hello"></span>!</p>
       </pre>
     </div>
+
 
     <footer>
       <div class="container">

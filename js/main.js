@@ -9,3 +9,7 @@ require({
     }
   }
 });
+
+require(['app'], function (app) {
+  app();
+});
