@@ -158,6 +158,7 @@
           // register any new elements that want the same component.
           require([path], function(module) {
             skate('[module="' + path + '"]', module);
+            done();
           });
         });
       </pre>
