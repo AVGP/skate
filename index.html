@@ -66,7 +66,7 @@
 
 
       <h3 id="heading-usage-async">Handling Async Stuff in the Ready Callback</h3>
-      <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call `insert()` before everything finishes. If you define a second argument to the `ready()` callback it passes in a function that you can call to continue execution.
+      <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call <code>insert()</code> before everything finishes. If you define a second argument to the <code>ready()</code> callback it passes in a function that you can call to continue execution.
       <pre code="javascript">
         skate('selector', function(element, done) {
           setTimeout(function() {
@@ -77,7 +77,7 @@
 
 
       <h3 id="heading-usage-replacement">Replacing the Existing Element</h3>
-      <p>If you want to replace the existing element all you have to do is pass a new element to the `done()` callback.</p>
+      <p>If you want to replace the existing element all you have to do is pass a new element to the <code>done()</code> callback.</p>
       <pre code="javascript">
         skate('x-custom-element', function(element, done) {
           done(document.createElement('div'));
