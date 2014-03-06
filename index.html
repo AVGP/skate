@@ -36,6 +36,9 @@
           // your component initialisation here
         });
       </pre>
+
+
+      <h3>Advanced</h3>
       <p>A component, as illustrated above, can be a function or as we have below, an object.</p>
       <pre code="javascript">
         var component = skate('css[selector]', {
@@ -60,6 +63,29 @@
           }
         });
       </pre>
+
+
+      <h3>Handling Async Stuff in the Ready Callback</h3>
+      <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call `insert()` before everything finishes. If you define a second argument to the `ready()` callback it passes in a function that you can call to continue execution.
+      <pre code="javascript">
+        skate('selector', function(element, done) {
+          setTimeout(function() {
+            done();
+          }, 1000);
+        });
+      </pre>
+
+
+      <h3>Replacing the Existing Element</h3>
+      <p>If you want to replace the existing element all you have to do is pass a new element to the `done()` callback.</p>
+      <pre code="javascript">
+        skate('x-custom-element', function(element, done) {
+          done(document.createElement('div'));
+        });
+      </pre>
+
+
+      <h3>Methods</h3>
       <p>Skate returns an instance which you can call methods on and get information from.</p>
       <pre code="javascript">
         // The adapter that is currently being used to listen for changes.
