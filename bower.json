@@ -8,6 +8,6 @@
     "highlightjs": "~8.0.0",
     "less": "~1.6.2",
     "requirejs": "~2.1.10",
-    "skate": "https://github.com/treshugart/skate/archive/lifecycle.zip"
+    "skate": "https://github.com/treshugart/skate/archive/master.zip"
   }
 }

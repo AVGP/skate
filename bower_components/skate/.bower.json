@@ -1,10 +1,11 @@
 {
   "name": "skate",
   "_cacheHeaders": {
+    "Content-Length": "11512",
     "Content-Type": "application/zip",
-    "Content-Disposition": "attachment; filename=skate-lifecycle.zip"
+    "Content-Disposition": "attachment; filename=skate-master.zip"
   },
-  "_source": "https://github.com/treshugart/skate/archive/lifecycle.zip",
+  "_source": "https://github.com/treshugart/skate/archive/master.zip",
   "_target": "*",
-  "_originalSource": "https://github.com/treshugart/skate/archive/lifecycle.zip"
+  "_originalSource": "https://github.com/treshugart/skate/archive/master.zip"
 }
