@@ -1,11 +1,22 @@
 {
   "name": "skate",
-  "_cacheHeaders": {
-    "Content-Length": "11512",
-    "Content-Type": "application/zip",
-    "Content-Disposition": "attachment; filename=skate-master.zip"
+  "description": "Modules through selector listeners.",
+  "dependencies": {},
+  "devDependencies": {
+    "bootstrap": "~3.1.0",
+    "highlightjs": "~8.0.0",
+    "less": "~1.6.2",
+    "requirejs": "~2.1.10"
   },
-  "_source": "https://github.com/treshugart/skate/archive/master.zip",
+  "homepage": "https://github.com/treshugart/skate",
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "45dc65c73f7539446f591bf19dc6ffbe7f599eae"
+  },
+  "_source": "git://github.com/treshugart/skate.git",
   "_target": "*",
-  "_originalSource": "https://github.com/treshugart/skate/archive/master.zip"
+  "_originalSource": "treshugart/skate"
 }

@@ -1,14 +1,13 @@
 define([
   'skate',
   'components/code',
-  'components/each',
   'components/external-link',
   'components/heading-link',
-  'components/icon'
+  'components/icon',
+  'components/toc'
 ], function(
   skate,
   code,
-  each,
   externalLink,
   headingLink,
   icon,
@@ -16,11 +15,9 @@ define([
 ) {
   return function() {
     skate('pre[code]', code);
-    skate('[each]', each);
     skate('a.external', externalLink);
     skate('h1[id], h2[id], h3[id]', headingLink);
     skate('[icon]', icon);
-
-    document.body.className = 'loaded';
+    skate('.toc', toc);
   };
 });
