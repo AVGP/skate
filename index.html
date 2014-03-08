@@ -129,7 +129,7 @@
         <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
 
 
-        <h2>Caveats</h2>
+        <h2 id="heading-caveats">Caveats</h2>
         <p>Behind the scenes, CSS animations are used to notify the handlers when a new element exists. If your element has a `display` of `none`, animations will not fire causing this technique fail. If you need to hide your element using `display: none`, then you may do so inside the `ready` callback.</p>
 
 
