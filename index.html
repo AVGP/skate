@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>SkateJS Documentation</title>
     <link rel="stylesheet/less" href="less/main.less">
@@ -11,187 +11,190 @@
   <body>
     <a href="https://github.com/treshugart/skate"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
     <header class="main">
-      <div class="container">
+      <div class="container-fluid">
         <h1>Skate <a href="https://travis-ci.org/treshugart/skate"><img src="https://travis-ci.org/treshugart/skate.png?branch=master"></a></h1>
         <p>Skate is a library for building dynamic components from any DOM element using CSS selectors.</p>
       </div>
     </header>
-    <div class="container">
-      <h2 id="heading-why">Why?</h2>
-      <p>Skate allows you to build components from any DOM element whether or not they already exist in the DOM, or are dynamically added at a later time.</p>
+    <div class="container-fluid">
+      <ul class="col-md-3 toc" data-toc-selector=""></ul>
+
+      <section class="col-md-9">
+        <h2 id="heading-why">Why?</h2>
+        <p>Skate allows you to build components from any DOM element whether or not they already exist in the DOM, or are dynamically added at a later time.</p>
 
 
-      <h2 id="heading-installing">Installing</h2>
-      <p>You can install Skate using <a class="external" href="http://bower.io/">Bower</a> or by downloading the source from the <a class="external" href="https://github.com/treshugart/skate">repository</a>.</p>
-      <pre code="bash">
-        bower install https://github.com/treshugart/skate/archive/master.zip
-      </pre>
+        <h2 id="heading-installing">Installing</h2>
+        <p>You can install Skate using <a class="external" href="http://bower.io/">Bower</a> or by downloading the source from the <a class="external" href="https://github.com/treshugart/skate">repository</a>.</p>
+        <pre code="bash">
+          bower install https://github.com/treshugart/skate/archive/master.zip
+        </pre>
 
 
-      <h2 id="heading-usage">Usage</h2>
-      <p>Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and a component definition.</p>
-      <pre code="javascript">
-        skate('css[selector]', function(element) {
-          // your component initialisation here
-        });
-      </pre>
-
-
-      <h3 id="heading-usage-advanced">Advanced</h3>
-      <p>A component, as illustrated above, can be a function or as we have below, an object.</p>
-      <pre code="javascript">
-        var component = skate('css[selector]', {
-          // Whether or not to automatically start listening. Defaults to true.
-          // If false, then you must manually call listen() on the Skate
-          // instance.
-          listen: true,
-
-          // Called prior to showing the element.
-          ready: function(element) {
-
-          },
-
-          // Called after the element is shown in the DOM.
-          inserted: function(element) {
-
-          },
-
-          // Called after the element is removed from the DOM.
-          removed: function(element) {
-
-          }
-        });
-      </pre>
-
-
-      <h3 id="heading-usage-async">Handling Async Stuff in the Ready Callback</h3>
-      <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call <code>insert()</code> before everything finishes. If you define a second argument to the <code>ready()</code> callback it passes in a function that you can call to continue execution.
-      <pre code="javascript">
-        skate('selector', function(element, done) {
-          setTimeout(function() {
-            done();
-          }, 1000);
-        });
-      </pre>
-
-
-      <h3 id="heading-usage-replacement">Replacing the Existing Element</h3>
-      <p>If you want to replace the existing element all you have to do is pass a new element to the <code>done()</code> callback.</p>
-      <pre code="javascript">
-        skate('x-custom-element', function(element, done) {
-          done(document.createElement('div'));
-        });
-      </pre>
-
-
-      <h3 id="heading-usage-methods">Methods</h3>
-      <p>Skate returns an instance which you can call methods on and get information from.</p>
-      <pre code="javascript">
-        // The adapter that is currently being used to listen for changes.
-        component.adapter;
-
-        // Contains an array of DOM elements which are currently bound to the component.
-        component.elements;
-
-        // Returns whether or not the component is listening for DOM elements.
-        component.listening;
-
-        // A requestAnimationFrame or setTimeout reference that listens for DOM
-        // elements being removed.
-        component.removeListener;
-
-        // The selector that was used to define the component.
-        component.selector;
-
-        // Tells the component to stop listening if it is.
-        component.deafen();
-
-        // Tells the component to start listening if it isn't.
-        component.listen();
-      </pre>
-
-
-      <p class="alert alert-info">A component's lifecycle callbacks are modelled after the lifecycle callbacks in the <a class="external" href="http://www.w3.org/TR/components-intro/#lifecycle-callbacks">Web Components Specification</a>.</p>
-
-
-      <h2 id="heading-compatibility">Compatibility</h2>
-      <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
-
-
-      <h2 id="heading-examples">Examples</h2>
-      <p>You can do pretty much anything you want with skate from building a simple date picker to building an entire framework like Polymer. The following examples cover a range of ideas that are possible.</p>
-
-
-      <h3 id="heading-examples-hello">Hello World</h3>
-      <p>In the obligatory Hello World example, we write a component that takes the value of the <code>hello</code> property to print out "Hello, World!"</p>
-      <pre code="javascript">
-        skate('[hello]', function(el) {
-          el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
-        });
-      </pre>
-      <pre code="html">
-        <p hello="World"></p>
-      </pre>
-
-
-      <h3 id="heading-examples-amd">Dynamic AMD Invocation</h3>
-      <p>The following example shows how you can create a component which loads another component and then creates a new instance which applies that loaded component.</p>
-      <pre code="javascript">
-        // Keep track of which modules are loaded so that we don't load and
-        // initialise the same module more than once.
-        var loaded = [];
-
-        skate('[module]', function(el, done) {
-          var path = el.getAttribute('module');
-          var alreadyLoaded = loaded.indexOf(path) !== -1;
-
-          // We don't want to load the module more than once since after
-          // loading, a new component is created that will automatically
-          // initialise any new elements with the module that was loaded
-          // in this component.
-          if (alreadyLoaded) {
-            return;
-          }
-
-          // Get the module and create a new component which will automatically
-          // register any new elements that want the same component.
-          require([path], function(module) {
-            skate('[module="' + path + '"]', module);
-            done();
+        <h2 id="heading-usage">Usage</h2>
+        <p>Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and a component definition.</p>
+        <pre code="javascript">
+          skate('css[selector]', function(element) {
+            // your component initialisation here
           });
-        });
-      </pre>
-      <p>You can then write HTML to dynamically load a component which is subsequently applied to your existing element.</p>
-      <pre code="html">
-        <p module="hello/world" hello="World"></p>
-      </pre>
-      <p>In <code>hello/world.js</code>:</p>
-      <pre code="javascript">
-        skate('[hello]', function(el) {
-          el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
-        });
-      </pre>
+        </pre>
 
 
-      <h3 id="heading-examples-ko">Automatically Binding KnockoutJS</h3>
-      <p>Knockout is a pretty cool framework, but unfortuately it can't autobind itself. With Skate, we can automate that process.</p>
-      <pre code="javascript">
-        skate('[ko]', function(el) {
-          ko.applyBindings(window[el.getAttribute('ko')], el);
-        });
-      </pre>
-      <p>Having your model in the global namespace may not be the best idea, but for the sake of brevity here it is:</p>
-      <pre code="javascript">
-        window.myAwesomeViewModel = {
-          hello: 'World'
-        };
-      </pre>
-      <p>All you've got to do then is tell your element which model you want to bind it to.</p>
-      <pre code="html">
-        <p ko="myAwesomeViewModel">Hello, <span data-bind="text: hello"></span>!</p>
-      </pre>
+        <h3 id="heading-usage-advanced">Advanced</h3>
+        <p>A component, as illustrated above, can be a function or as we have below, an object.</p>
+        <pre code="javascript">
+          var component = skate('css[selector]', {
+            // Whether or not to automatically start listening. Defaults to true.
+            // If false, then you must manually call listen() on the Skate
+            // instance.
+            listen: true,
+
+            // Called prior to showing the element.
+            ready: function(element) {
+
+            },
+
+            // Called after the element is shown in the DOM.
+            inserted: function(element) {
+
+            },
+
+            // Called after the element is removed from the DOM.
+            removed: function(element) {
+
+            }
+          });
+        </pre>
+
+
+        <h3 id="heading-usage-async">Handling Async Stuff in the Ready Callback</h3>
+        <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call <code>insert()</code> before everything finishes. If you define a second argument to the <code>ready()</code> callback it passes in a function that you can call to continue execution.
+        <pre code="javascript">
+          skate('selector', function(element, done) {
+            setTimeout(function() {
+              done();
+            }, 1000);
+          });
+        </pre>
+
+
+        <h3 id="heading-usage-replacement">Replacing the Existing Element</h3>
+        <p>If you want to replace the existing element all you have to do is pass a new element to the <code>done()</code> callback.</p>
+        <pre code="javascript">
+          skate('x-custom-element', function(element, done) {
+            done(document.createElement('div'));
+          });
+        </pre>
+
+
+        <h3 id="heading-usage-api">API</h3>
+        <p>Skate returns an instance which you can call methods on and get information from.</p>
+        <pre code="javascript">
+          // The adapter that is currently being used to listen for changes.
+          component.adapter;
+
+          // Contains an array of DOM elements which are currently bound to the component.
+          component.elements;
+
+          // Returns whether or not the component is listening for DOM elements.
+          component.listening;
+
+          // A requestAnimationFrame or setTimeout reference that listens for DOM
+          // elements being removed.
+          component.removeListener;
+
+          // The selector that was used to define the component.
+          component.selector;
+
+          // Tells the component to stop listening if it is.
+          component.deafen();
+
+          // Tells the component to start listening if it isn't.
+          component.listen();
+        </pre>
+
+
+        <p class="alert alert-info">A component's lifecycle callbacks are modelled after the lifecycle callbacks in the <a class="external" href="http://www.w3.org/TR/components-intro/#lifecycle-callbacks">Web Components Specification</a>.</p>
+
+
+        <h2 id="heading-compatibility">Compatibility</h2>
+        <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
+
+
+        <h2 id="heading-examples">Examples</h2>
+        <p>You can do pretty much anything you want with skate from building a simple date picker to building an entire framework like Polymer. The following examples cover a range of ideas that are possible.</p>
+
+
+        <h3 id="heading-examples-hello">Hello World</h3>
+        <p>In the obligatory Hello World example, we write a component that takes the value of the <code>hello</code> property to print out "Hello, World!"</p>
+        <pre code="javascript">
+          skate('[hello]', function(el) {
+            el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
+          });
+        </pre>
+        <pre code="html">
+          <p hello="World"></p>
+        </pre>
+
+
+        <h3 id="heading-examples-amd">Dynamic AMD Invocation</h3>
+        <p>The following example shows how you can create a component which loads another component and then creates a new instance which applies that loaded component.</p>
+        <pre code="javascript">
+          // Keep track of which modules are loaded so that we don't load and
+          // initialise the same module more than once.
+          var loaded = [];
+
+          skate('[module]', function(el, done) {
+            var path = el.getAttribute('module');
+            var alreadyLoaded = loaded.indexOf(path) !== -1;
+
+            // We don't want to load the module more than once since after
+            // loading, a new component is created that will automatically
+            // initialise any new elements with the module that was loaded
+            // in this component.
+            if (alreadyLoaded) {
+              return;
+            }
+
+            // Get the module and create a new component which will automatically
+            // register any new elements that want the same component.
+            require([path], function(module) {
+              skate('[module="' + path + '"]', module);
+              done();
+            });
+          });
+        </pre>
+        <p>You can then write HTML to dynamically load a component which is subsequently applied to your existing element.</p>
+        <pre code="html">
+          <p module="hello/world" hello="World"></p>
+        </pre>
+        <p>In <code>hello/world.js</code>:</p>
+        <pre code="javascript">
+          skate('[hello]', function(el) {
+            el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
+          });
+        </pre>
+
+
+        <h3 id="heading-examples-ko">Automatically Binding KnockoutJS</h3>
+        <p>Knockout is a pretty cool framework, but unfortuately it can't autobind itself. With Skate, we can automate that process.</p>
+        <pre code="javascript">
+          skate('[ko]', function(el) {
+            ko.applyBindings(window[el.getAttribute('ko')], el);
+          });
+        </pre>
+        <p>Having your model in the global namespace may not be the best idea, but for the sake of brevity here it is:</p>
+        <pre code="javascript">
+          window.myAwesomeViewModel = {
+            hello: 'World'
+          };
+        </pre>
+        <p>All you've got to do then is tell your element which model you want to bind it to.</p>
+        <pre code="html">
+          <p ko="myAwesomeViewModel">Hello, <span data-bind="text: hello"></span>!</p>
+        </pre>
+      </section>
     </div>
-
 
     <footer>
       <div class="container">

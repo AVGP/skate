@@ -3,17 +3,63 @@
 Skate
 =====
 
-Listens for DOM elements matching a selector and runs a function against each element once available.
+Skate is a library for building dynamic components from any DOM element using CSS selectors.
+
+Why?
+----
+
+Skate allows you to build components from any DOM element whether or not they already exist in the DOM, or are dynamically added at a later time.
+
+Installing
+----------
+
+You can install Skate using Bower or by downloading the source from the repository.
+
+    bower install https://github.com/treshugart/skate/archive/lifecycle.zip
 
 Usage
 -----
 
-Skate allows you to easily define a component:
+Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and a component definition.
 
-    skate('p[hello]', function(p) {
-      p.innerText = 'Hello, ' + p.getAttribute('hello') + '!';
+    skate('css[selector]', function(element) {
+      // your component initialisation here
     });
 
-which make all current and future elements matching `p[hello]`:
+Docs
+----
 
-    <p hello="World">Hello, World!</p>
+The full documentation is available at [http://treshugart.github.io/skate/](http://treshugart.github.io/skate/).
+
+Compatibility
+-------------
+
+Works in all evergreen browsers that support CSS animation and falls back to using deprecated mutation events in IE9.
+
+License
+-------
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Trey Shugart
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/treshugart/skate/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
