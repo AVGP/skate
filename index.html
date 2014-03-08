@@ -67,13 +67,19 @@
         </pre>
 
 
+        <h3 id="heading-usage-ready-vs-insert">Ready vs Insert</h3>
+        <p>By default if you only pass a function handler as the second argument to `skate()` it will be bound to the `insert` callback. When you specify a `ready` callback, the element is hidden prior to calling `ready` and then shown just before `insert` is called so that you can alter the element's structure if need be. This isn't the default behaviour because it isn't recommended that you couple your HTML to your components. Rather, you should have a component that renders your HTML and your other components can augment the behaviour of what already exists in the DOM.</p>
+
+
         <h3 id="heading-usage-async">Handling Async Stuff in the Ready Callback</h3>
         <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call <code>insert()</code> before everything finishes. If you define a second argument to the <code>ready()</code> callback it passes in a function that you can call to continue execution.
         <pre code="javascript">
-          skate('selector', function(element, done) {
-            setTimeout(function() {
-              done();
-            }, 1000);
+          skate('selector', {
+            ready: function(element, done) {
+              setTimeout(function() {
+                done();
+              }, 1000);
+            }
           });
         </pre>
 
@@ -81,8 +87,10 @@
         <h3 id="heading-usage-replacement">Replacing the Existing Element</h3>
         <p>If you want to replace the existing element all you have to do is pass a new element to the <code>done()</code> callback.</p>
         <pre code="javascript">
-          skate('x-custom-element', function(element, done) {
-            done(document.createElement('div'));
+          skate('x-custom-element', {
+            ready: function(element, done) {
+              done(document.createElement('div'));
+            }
           });
         </pre>
 
