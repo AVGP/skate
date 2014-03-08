@@ -13,7 +13,7 @@
     <header class="main">
       <div class="container-fluid">
         <h1>Skate <a href="https://travis-ci.org/treshugart/skate"><img src="https://travis-ci.org/treshugart/skate.png?branch=master"></a></h1>
-        <p>Skate is a library for building dynamic components from any DOM element using CSS selectors.</p>
+        <p>Skate is a library that allows you to create custom - or augment existing - DOM elements via CSS selectors.</p>
       </div>
     </header>
     <div class="container-fluid">
@@ -21,7 +21,7 @@
 
       <section class="col-md-9">
         <h2 id="heading-why">Why?</h2>
-        <p>Skate allows you to build components from any DOM element whether or not they already exist in the DOM, or are dynamically added at a later time.</p>
+        <p>Skate allows you to apply behaviour to custom or native DOM elements at any point in your application's lifecycle regardless of if your element exists on page load or is added dynamically.</p>
 
 
         <h2 id="heading-installing">Installing</h2>
@@ -68,7 +68,7 @@
 
 
         <h3 id="heading-usage-ready-vs-insert">Ready vs Insert</h3>
-        <p>By default if you only pass a function handler as the second argument to `skate()` it will be bound to the `insert` callback. When you specify a `ready` callback, the element is hidden prior to calling `ready` and then shown just before `insert` is called so that you can alter the element's structure if need be. This isn't the default behaviour because it isn't recommended that you couple your HTML to your components. Rather, you should have a component that renders your HTML and your other components can augment the behaviour of what already exists in the DOM.</p>
+        <p>By default if you only pass a function handler as the second argument to <code>skate()</code> it will be bound to the <code>insert</code> callback. When you specify a <code>ready</code> callback, the element is hidden prior to calling <code>ready</code> and then shown just before <code>insert</code> is called so that you can alter the element's structure if need be. This isn't the default behaviour because it isn't recommended that you couple your HTML to your components. Rather, you should have a component that renders your HTML and your other components can augment the behaviour of what already exists in the DOM.</p>
 
 
         <h3 id="heading-usage-async">Handling Async Stuff in the Ready Callback</h3>
