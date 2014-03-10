@@ -5,6 +5,7 @@ define([
   'components/external-link',
   'components/heading-link',
   'components/icon',
+  'components/template',
   'components/toc'
 ], function(
   skate,
@@ -13,6 +14,7 @@ define([
   externalLink,
   headingLink,
   icon,
+  template,
   toc
 ) {
   return function() {
@@ -22,6 +24,8 @@ define([
     skate('h1[id], h2[id], h3[id]', headingLink);
     skate('[icon]', icon);
     skate('.toc', toc);
+
+    template();
 
     document.body.className = 'loaded';
   };
