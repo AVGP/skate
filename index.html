@@ -46,7 +46,11 @@
         <h3 id="heading-usage-advanced">Advanced</h3>
         <p>A component, as illustrated above, can be a function or as we have below, an object.</p>
         <pre code="javascript">
-          var component = skate('css[selector]', {
+          skate('css[selector]', {
+            // Whether or not to extend the native DOM elements with the
+            // attributes and properties in this definition.
+            extend: true,
+
             // Whether or not to automatically start listening. Defaults to true.
             // If false, then you must manually call listen() on the Skate
             // instance.
@@ -67,6 +71,35 @@
 
             }
           });
+        </pre>
+
+
+        <h3 id="heading-usage-custom-methods-and-properties">Custom Methods and Properties</h3>
+        <p>As shown above, if <code>extend</code> is set to <code>true</code> then it will extend the element with the methods and properties that you've passed in your definition.</p>
+        <pre code="javascript">
+          skate('dialog#my-dialog', {
+            speed: 250,
+
+            ready: function() {
+              $(this).hide();
+            },
+
+            show: function() {
+              $(this).fadeIn(this.speed);
+              return this;
+            },
+
+            hide: function() {
+              $(this).fadeOut(this.speed);
+              return this;
+            }
+          });
+        </pre>
+        <pre code="html">
+          <dialog id="my-dialog">My dialog.</dialog>
+        </pre>
+        <pre code="javascript">
+          document.getElementById('my-dialog').show();
         </pre>
 
 
