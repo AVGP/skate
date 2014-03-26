@@ -1,7 +1,7 @@
 define(function() {
-  return function(el) {
-    el.addEventListener('click', function(e) {
-      window.open(el.getAttribute('href'));
+  return function() {
+    this.addEventListener('click', function(e) {
+      window.open(e.target.getAttribute('href'));
       e.preventDefault();
     });
   };

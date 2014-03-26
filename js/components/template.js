@@ -7,8 +7,9 @@ define(['skate'], function(skate) {
   };
 
   return {
-    ready: function(el, done) {
-      var templateName = el.getAttribute(config.attribute);
+    ready: function(done) {
+      var that = this;
+      var templateName = this.getAttribute(config.attribute);
       var templateNode;
 
       if (loaded[templateName]) {
@@ -30,7 +31,7 @@ define(['skate'], function(skate) {
 
 
       function render(data) {
-        el.innerHTML = loaded[templateName] = data;
+        that.innerHTML = loaded[templateName] = data;
         done();
       }
     }

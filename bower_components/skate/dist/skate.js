@@ -25,6 +25,7 @@
 
         if (Element.prototype[method]) {
           matcher = method;
+          return true;
         }
       });
 
@@ -32,13 +33,6 @@
         return element[matcher](selector);
       };
     }());
-  var ensureHideRules = [
-      'height: 0 !important',
-      'width: 0 !important',
-      'overflow: hidden !important',
-      'margin: 0 !important',
-      'padding: 0 !important'
-    ];
 
 
   // `requestAnimationFrame` Polyfill
@@ -104,9 +98,17 @@
     return new Skate(selector, component);
   }
 
+  skate.defaults = {
+    extend: true,
+    listen: true
+  };
+
 
   // Common Interface
   // ----------------
+
+  var blacklist = Object.keys(skate.defaults);
+  blacklist.concat(['ready', 'insert', 'remove']);
 
   function Skate(selector, component) {
     this.adapter = new DetectedAdapter(this);
@@ -121,11 +123,7 @@
       };
     }
 
-    if (component.listen === undefined) {
-      component.listen = true;
-    }
-
-    this.component = component;
+    inherit(this.component = component, skate.defaults);
 
     if (component.ready) {
       hideElementsBySelector(selector);
@@ -149,14 +147,14 @@
         triggerReady(that, target);
       });
 
-      if (this.component.removed) {
+      if (this.component.remove) {
         this.removeListener = timeout.repeat(function() {
           for (var a = that.elements.length - 1; a > -1; a--) {
             var el = that.elements[a];
 
             if (!el.parentNode) {
               that.elements.splice(a, 1);
-              that.component.removed(el);
+              that.component.remove.call(el);
             }
           }
         });
@@ -181,24 +179,45 @@
     }
   };
 
+  // Triggers the ready callback and continues execution to the insert callback.
   function triggerReady(skate, target) {
-    var ready = skate.component.ready;
-    var definedMultipleArgs = /^[^(]+\([^,)]+,/;
+    var hasArgs = /^[^(]+\([^)]+\)/;
+    var readyFn = skate.component.ready;
+    var elementIndex = skate.elements.length;
 
-    if (ready && definedMultipleArgs.test(ready)) {
-      ready(target, done);
-    } else if (ready) {
-      ready(target);
+    // If it's already been setup, don't do anything.
+    if (skate.elements.indexOf(target) > -1) {
+      return;
+    }
+
+    // Adds to the list of registered elements so the remove check knows which elements to check.
+    skate.elements.push(target);
+
+    // Inherit all non-special methods and properties.
+    inherit(target, skate.component, blacklist);
+
+    // If an async callback is defined make it async, sync or do nothing if no ready method is defined.
+    if (readyFn && hasArgs.test(readyFn)) {
+      readyFn.call(target, done);
+    } else if (target.ready) {
+      readyFn.call(target);
       done();
     } else {
       done();
     }
 
+    // Async callback that continues execution.
     function done(element) {
       if (element) {
+        // Replace the existing element in th registry with the new one.
+        skate.elements.splice(elementIndex, 1, target);
+
+        // Replace the existing element in the DOM.
         target.parentNode.insertBefore(element, target);
         target.parentNode.removeChild(target);
-        target = element;
+
+        // We must extend the new element.
+        inherit(target = element, skate.component, blacklist);
       }
 
       triggerInsert(skate, target);
@@ -206,11 +225,13 @@
   }
 
   function triggerInsert(skate, target) {
-    addClass(target, classname);
-    skate.elements.push(target);
+    var insertFn = skate.component.insert;
 
-    if (skate.component.insert) {
-      skate.component.insert(target);
+    // Ensures that the element is no longer hidden.
+    addClass(target, classname);
+
+    if (insertFn) {
+      insertFn.call(target);
     }
   }
 
@@ -367,11 +388,8 @@
 
   function hideElementsBySelector(selector) {
     var ensureHideRules = [
-      'height: 0 !important',
-      'width: 0 !important',
-      'overflow: hidden !important',
-      'margin: 0 !important',
-      'padding: 0 !important'
+      'position: absolute !important',
+      'clip: rect(0, 0, 0, 0)'
     ];
 
     hiddenRules.sheet.insertRule(
@@ -397,7 +415,7 @@
     if (element.classList) {
       element.classList.add(classname);
     } else {
-      element.className += classname;
+      element.className +=  ' ' + classname;
     }
   }
 
@@ -409,6 +427,18 @@
     });
 
     return parts.join(',');
+  }
+
+  function inherit(base, from, blacklist) {
+    for (var a in from) {
+      if (blacklist && blacklist.indexOf(a) > -1) {
+        continue;
+      }
+
+      if (typeof base[a] === 'undefined') {
+        base[a] = from[a];
+      }
+    }
   }
 
 

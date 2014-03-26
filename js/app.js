@@ -1,7 +1,6 @@
 define([
   'skate',
   'components/code',
-  'components/detach',
   'components/each',
   'components/external-link',
   'components/heading-link',
@@ -11,7 +10,6 @@ define([
 ], function(
   skate,
   code,
-  detach,
   each,
   externalLink,
   headingLink,
@@ -21,7 +19,6 @@ define([
 ) {
   return function() {
     skate('pre[code]', code);
-    skate('.detach', detach);
     skate('[each]', each);
     skate('a.external', externalLink);
     skate('h1[id], h2[id], h3[id]', headingLink);

@@ -6,11 +6,12 @@ define([
   hjs
 ) {
   return {
-    ready: function(el) {
-      var baseIndent = getIndentLength(el.textContent.split("\n")[0]);
-      var lines = trim(el.innerHTML).split("\n");
+    ready: function() {
+      var that = this;
+      var baseIndent = getIndentLength(this.textContent.split("\n")[0]);
+      var lines = trim(this.innerHTML).split("\n");
 
-      el.innerHTML = '';
+      this.innerHTML = '';
 
       lines.forEach(function(line, index) {
         var indent = getIndentLength(line) - baseIndent;
@@ -26,11 +27,11 @@ define([
         num.innerHTML = index + 1;
 
         code.className = 'code-line-content';
-        code.innerHTML = setIndentLength(indent) + hjs.highlight(el.getAttribute('code'), line).value;
+        code.innerHTML = setIndentLength(indent) + hjs.highlight(that.getAttribute('code'), line).value;
 
-        el.appendChild(num);
-        el.appendChild(code);
-        el.appendChild(nl);
+        that.appendChild(num);
+        that.appendChild(code);
+        that.appendChild(nl);
       });
     }
   };

@@ -1,5 +1,5 @@
 define(function() {
-  return function(el) {
-    el.className = 'glyphicon glyphicon-' + el.getAttribute('icon');
+  return function() {
+    this.className = 'glyphicon glyphicon-' + this.getAttribute('icon');
   };
 });

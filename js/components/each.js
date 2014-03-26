@@ -1,11 +1,12 @@
 define(['witness'], function(witness) {
-  return function(el) {
-    var each = window[el.getAttribute('each')];
+  return function() {
+    var that = this;
+    var each = window[this.getAttribute('each')];
     var observer = witness(each);
-    var parent = el.parentNode;
+    var parent = this.parentNode;
 
     // Remove and use as a template.
-    parent.removeChild(el);
+    parent.removeChild(this);
 
     observer.on('add', function(change) {
       parent.appendChild(clone());
@@ -24,7 +25,7 @@ define(['witness'], function(witness) {
 
 
     function clone() {
-      var dolly = el.cloneNode(true);
+      var dolly = that.cloneNode(true);
       dolly.removeAttribute('each');
       return dolly;
     }
