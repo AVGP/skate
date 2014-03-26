@@ -161,6 +161,33 @@
         </pre>
 
 
+        <h2 id="heading-synchronous-initialisation">Synchronous Initialisation</h2>
+        <p>Inherently, Skate works asyncrhonously when initialising elements. For example the following isn't reliable:</p>
+        <pre code="javascript">
+          skate('div', function() {
+            ready: function() {
+              this.textContent = 'testing';
+            }
+          });
+
+          var div = document.createElement('div');
+          document.body.appendChild(div);
+
+          if (div.textContent === 'testing') {
+            // do your stuff here
+          }
+        </pre>
+        <p>To ensure that the element is initialised when you want it to be, simply pass it to the skate function:</p>
+        <pre code="javascript">
+          skate(div);
+          // now do your stuff with it
+        </pre>
+        <p>This doesn't just work with elements, you can pass in anything that is traversable or a selector:</p>
+        <pre code="javascript">
+
+        </pre>
+
+
         <h2 id="heading-compatibility">Compatibility</h2>
         <p>Works in all <em>evergreen browsers</em> that <a class="external" href="http://caniuse.com/#feat=css-animation">support CSS animation</a> and falls back to using <a class="external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events">deprecated mutation events</a> in <strong>IE9</strong>.</p>
 
