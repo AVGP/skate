@@ -1,14 +1,10 @@
 {
   "name": "skate",
-  "homepage": "https://github.com/treshugart/skate",
-  "version": "0.3.0",
-  "_release": "0.3.0",
-  "_resolution": {
-    "type": "version",
-    "tag": "0.3.0",
-    "commit": "55d283f25569c21e35314920854eaa5bf5540103"
+  "_cacheHeaders": {
+    "Content-Type": "application/zip",
+    "Content-Disposition": "attachment; filename=skate-41da023504663e51a8a8aa6cfa299bb761f0d86d.zip"
   },
-  "_source": "git://github.com/treshugart/skate.git",
-  "_target": "~0.3.0",
-  "_originalSource": "skate"
+  "_source": "https://github.com/treshugart/skate/archive/41da023504663e51a8a8aa6cfa299bb761f0d86d.zip",
+  "_target": "*",
+  "_originalSource": "https://github.com/treshugart/skate/archive/41da023504663e51a8a8aa6cfa299bb761f0d86d.zip"
 }
