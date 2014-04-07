@@ -121,7 +121,7 @@
         <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call <code>insert()</code> before everything finishes. If you define a second argument to the <code>ready()</code> callback it passes in a function that you can call to continue execution.
         <pre code="javascript">
           skate('selector', {
-            ready: function(element, done) {
+            ready: function(done) {
               setTimeout(function() {
                 done();
               }, 1000);
@@ -134,7 +134,7 @@
         <p>If you want to replace the existing element all you have to do is pass a new element to the <code>done()</code> callback.</p>
         <pre code="javascript">
           skate('x-custom-element', {
-            ready: function(element, done) {
+            ready: function(done) {
               done(document.createElement('div'));
             }
           });
@@ -154,21 +154,14 @@
           // Destroys by deafening and unregistering all registered components.
           // Can be very useful in tests in a teardown hook.
           skate.destroy();
+
+          // Finds all instances matching the specified element.
+          skate.find(element);
         </pre>
         <p>Skate returns an instance which you can call methods on and get information from.</p>
         <pre code="javascript">
-          // The adapter that is currently being used to listen for changes.
-          component.adapter;
-
           // Contains an array of DOM elements which are currently bound to the component.
           component.elements;
-
-          // Returns whether or not the component is listening for DOM elements.
-          component.listening;
-
-          // A requestAnimationFrame or setTimeout reference that listens for DOM
-          // elements being removed.
-          component.removeListener;
 
           // The selector that was used to define the component.
           component.selector;
@@ -204,9 +197,9 @@
         </pre>
         <p>This doesn't just work with elements, you can pass in anything that is traversable or a selector:</p>
         <pre code="javascript">
-          skate(domElement);
-          skate([domElement, domElement]);
-          skate(domElement.childNodes);
+          skate(element);
+          skate([element1, element2]);
+          skate(element.childNodes);
           skate(document.querySelectorAll('select.multiple.elements'));
           skate('select.multiple.elements');
         </pre>
@@ -227,8 +220,8 @@
         <h3 id="heading-examples-hello">Hello World</h3>
         <p>In the obligatory Hello World example, we write a component that takes the value of the <code>hello</code> property to print out "Hello, World!"</p>
         <pre code="javascript">
-          skate('[hello]', function(el) {
-            el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
+          skate('[hello]', function() {
+            this.textContent = 'Hello, ' + this.getAttribute('hello') + '!';
           });
         </pre>
         <pre code="html">
@@ -243,8 +236,8 @@
           // initialise the same module more than once.
           var loaded = [];
 
-          skate('[module]', function(el, done) {
-            var path = el.getAttribute('module');
+          skate('[module]', function(done) {
+            var path = this.getAttribute('module');
             var alreadyLoaded = loaded.indexOf(path) !== -1;
 
             // We don't want to load the module more than once since after
@@ -269,8 +262,8 @@
         </pre>
         <p>In <code>hello/world.js</code>:</p>
         <pre code="javascript">
-          skate('[hello]', function(el) {
-            el.textContent = 'Hello, ' + el.getAttribute('hello') + '!';
+          skate('[hello]', function() {
+            this.textContent = 'Hello, ' + this.getAttribute('hello') + '!';
           });
         </pre>
 
@@ -278,8 +271,8 @@
         <h3 id="heading-examples-ko">Automatically Binding KnockoutJS</h3>
         <p>Knockout is a pretty cool framework, but unfortuately it can't autobind itself. With Skate, we can automate that process.</p>
         <pre code="javascript">
-          skate('[ko]', function(el) {
-            ko.applyBindings(window[el.getAttribute('ko')], el);
+          skate('[ko]', function() {
+            ko.applyBindings(window[this.getAttribute('ko')], this);
           });
         </pre>
         <p>Having your model in the global namespace may not be the best idea, but for the sake of brevity here it is:</p>
