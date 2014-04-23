@@ -1,11 +1,11 @@
 define(function() {
-  return function() {
+  return function(element) {
     var a = document.createElement('a');
 
-    a.innerHTML = this.innerHTML;
-    this.innerHTML = '';
+    a.innerHTML = element.innerHTML;
+    element.innerHTML = '';
 
-    a.setAttribute('href', '#' + this.getAttribute('id'));
-    this.appendChild(a);
+    a.setAttribute('href', '#' + element.getAttribute('id'));
+    element.appendChild(a);
   };
 });

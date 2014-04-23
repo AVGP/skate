@@ -1,17 +1,16 @@
 define(['skate'], function(skate) {
-  return function() {
-    var parent = this;
-    var selector = this.getAttribute('data-toc-selector') || 'h2, h3, h4, h5, h6';
+  return function(parent) {
+    var selector = parent.getAttribute('data-toc-selector') || 'h2, h3, h4, h5, h6';
     var lastSequence = 0;
     var index = 0;
 
-    skate(selector, function() {
-      var sequence = this.tagName.replace('H', '');
+    skate(selector, function(child) {
+      var sequence = child.tagName.replace('H', '');
       var listitem = document.createElement('li');
       var anchor = document.createElement('a');
 
-      anchor.href = '#' + this.id;
-      anchor.textContent = this.textContent;
+      anchor.href = '#' + child.id;
+      anchor.textContent = child.textContent;
       listitem.appendChild(anchor);
 
       if (!lastSequence) {
