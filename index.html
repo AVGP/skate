@@ -20,14 +20,14 @@
     <div class="container-fluid">
       <ul class="col-md-3 skate-toc"></ul>
       <section class="col-md-9">
-        <h2 skate-toc-item id="heading-installing">Installing</h2>
+        <h2 skate-heading-link skate-toc-item id="heading-installing">Installing</h2>
         <p>You can install Skate using <a is="skate-external-link" href="http://bower.io/">Bower</a> or by downloading the source from the <a class="external" href="https://github.com/treshugart/skate">repository</a>.</p>
         <skate-code lang="bash">
           bower install skate
         </skate-code>
 
 
-        <h2 skate-toc-item id="heading-usage">Usage</h2>
+        <h2 skate-heading-link skate-toc-item id="heading-usage">Usage</h2>
         <p>Creating a new component out of existing and new DOM elements is as easy as passing a CSS selector and a component definition.</p>
         <skate-code lang="javascript">
           skate('input[type="date"]', function() {
@@ -37,7 +37,7 @@
         </skate-code>
 
 
-        <h3 skate-toc-item id="heading-usage-advanced">Advanced</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-usage-advanced">Advanced</h3>
         <p>A basic component may simply be a function. However, you can specify options and lifecycle callbacks as illustrated below.</p>
         <skate-code lang="javascript">
           skate('p', {
@@ -79,7 +79,7 @@
         <p class="alert alert-info">A component's lifecycle callbacks are based on the lifecycle callbacks in the <a class="external" href="http://www.w3.org/TR/components-intro/#lifecycle-callbacks">Web Components Specification</a>.</p>
 
 
-        <h3 skate-toc-item id="heading-usage-custom-methods-and-properties">Custom Methods and Properties</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-usage-custom-methods-and-properties">Custom Methods and Properties</h3>
         <p>As documented above, you can specify custom methods and properties on your DOM element.</p>
         <skate-code lang="javascript">
           skate('dialog#my-dialog', {
@@ -110,11 +110,11 @@
         </skate-code>
 
 
-        <h3 skate-toc-item id="heading-usage-ready-vs-insert">Ready vs Insert</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-usage-ready-vs-insert">Ready vs Insert</h3>
         <p>By default if you only pass a function handler as the first argument to <code>skate()</code> it will be bound to the <code>insert</code> callback. When you specify a <code>ready</code> callback, the element is hidden prior to calling <code>ready</code> and then shown just before <code>insert</code> is called so that you can alter the element's structure if need be. This isn't the default behaviour because it isn't recommended that you couple your HTML to your components. Rather, you should have a component that renders your HTML and your other components can augment the behaviour of what already exists in the DOM.</p>
 
 
-        <h3 skate-toc-item id="heading-usage-async">Handling Async Stuff in the Ready Callback</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-usage-async">Handling Async Stuff in the Ready Callback</h3>
         <p>There may be situations where you need do something async in your ready callback and you don't want it to show and call <code>insert()</code> before everything finishes. If you define a second argument to the <code>ready()</code> callback it passes in a function that you can call to continue execution.
         <skate-code lang="javascript">
           skate('selector', {
@@ -127,7 +127,7 @@
         </skate-code>
 
 
-        <h3 skate-toc-item id="heading-usage-replacement">Replacing the Existing Element</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-usage-replacement">Replacing the Existing Element</h3>
         <p>If you want to replace the existing element all you have to do is pass a new element to the <code>done()</code> callback.</p>
         <skate-code lang="javascript">
           skate('x-custom-element', {
@@ -138,7 +138,7 @@
         </skate-code>
 
 
-        <h3 skate-toc-item id="heading-usage-api">API</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-usage-api">API</h3>
         <p>Skate makes certain methods and properties available globally:</p>
         <skate-code lang="javascript">
           // Object of default options that are used to initialse each component.
@@ -171,7 +171,7 @@
         </skate-code>
 
 
-        <h2 skate-toc-item id="heading-synchronous-initialisation">Synchronous Initialisation</h2>
+        <h2 skate-heading-link skate-toc-item id="heading-synchronous-initialisation">Synchronous Initialisation</h2>
         <p>Inherently, Skate works asyncrhonously when initialising elements. For example the following isn't reliable:</p>
         <skate-code lang="javascript">
           skate('div', function() {
@@ -202,19 +202,19 @@
         </skate-code>
 
 
-        <h2 skate-toc-item id="heading-compatibility">Compatibility</h2>
+        <h2 skate-heading-link skate-toc-item id="heading-compatibility">Compatibility</h2>
         <p>IE9+ and all evergreens.</p>
 
 
-        <h2 skate-toc-item id="heading-caveats">Caveats</h2>
+        <h2 skate-heading-link skate-toc-item id="heading-caveats">Caveats</h2>
         <p>Behind the scenes, CSS animations are used to notify the handlers when a new element exists. If your element has a <code>display</code> of <code>none</code>, animations will not fire causing this technique to fail. If you need to hide your element using <code>display: none</code>, then you may do so inside the <code>ready</code> callback.</p>
 
 
-        <h2 skate-toc-item id="heading-examples">Examples</h2>
+        <h2 skate-heading-link skate-toc-item id="heading-examples">Examples</h2>
         <p>You can do pretty much anything you want with skate from building a simple date picker to building an entire framework like Polymer. The following examples cover a range of ideas that are possible.</p>
 
 
-        <h3 skate-toc-item id="heading-examples-hello">Hello World</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-examples-hello">Hello World</h3>
         <p>In the obligatory Hello World example, we write a component that takes the value of the <code>hello</code> property to print out "Hello, World!"</p>
         <skate-code lang="javascript">
           skate('[hello]', function() {
@@ -226,7 +226,7 @@
         </skate-code>
 
 
-        <h3 skate-toc-item id="heading-examples-amd">Dynamic AMD Invocation</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-examples-amd">Dynamic AMD Invocation</h3>
         <p>The following example shows how you can create a component which loads another component and then creates a new instance which applies that loaded component.</p>
         <skate-code lang="javascript">
           // Keep track of which modules are loaded so that we don't load and
@@ -265,7 +265,7 @@
         </skate-code>
 
 
-        <h3 skate-toc-item id="heading-examples-ko">Automatically Binding KnockoutJS</h3>
+        <h3 skate-heading-link skate-toc-item id="heading-examples-ko">Automatically Binding KnockoutJS</h3>
         <p>Knockout is a pretty cool framework, but unfortuately it can't autobind itself. With Skate, we can automate that process.</p>
         <skate-code lang="javascript">
           skate('[ko]', function() {

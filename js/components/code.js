@@ -3,9 +3,18 @@ define(['skate', 'lib/trim', 'highlight'], function (skate, trim, hjs) {
     restrict: 'skate-code',
     ready: function (element) {
       var html = element.textContent;
-      var lines = html.split("\n").filter(function(line) {
-        return line || false;
-      });
+      var lines = html.split("\n");
+
+      // Trim leading empty lines.
+      if (!trim(lines[0])) {
+        lines.splice(0, 1);
+      }
+
+      // Trim trailing empty lines
+      if (!trim(lines[lines.length - 1])) {
+        lines.splice(lines.length - 1, 1);
+      }
+
       var baseIndent = getIndentLength(lines[0]);
       var pre = document.createElement('pre');
 

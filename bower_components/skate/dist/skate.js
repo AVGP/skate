@@ -253,13 +253,18 @@
     var readyFn = component.ready;
     done = done || function(){};
 
+    // Make sure the tracker is registered.
+    if (!target[skate.isReadyTriggeredProperty]) {
+      target[skate.isReadyTriggeredProperty] = [];
+    }
+
     // If it's already been triggered, skip.
-    if (target[skate.isReadyTriggeredProperty]) {
+    if (target[skate.isReadyTriggeredProperty].indexOf(component) > -1) {
       return done();
     }
 
     // Set as ready.
-    target[skate.isReadyTriggeredProperty] = true;
+    target[skate.isReadyTriggeredProperty].push(component);
 
     // Extend element properties and methods with those provided.
     inherit(target, component.extend);
@@ -284,8 +289,13 @@
   function triggerInsert(component, target) {
     var insertFn = component.insert;
 
+    // Make sure the tracker is registered.
+    if (!target[skate.isInsertTriggeredProperty]) {
+      target[skate.isInsertTriggeredProperty] = [];
+    }
+
     // If it's already been triggered, skip.
-    if (target[skate.isInsertTriggeredProperty]) {
+    if (target[skate.isInsertTriggeredProperty].indexOf(component) > -1) {
       return;
     }
 
@@ -295,7 +305,7 @@
     }
 
     // Set as inserted.
-    target[skate.isInsertTriggeredProperty] = true;
+    target[skate.isInsertTriggeredProperty].push(component);
 
     // Ensures that the element is no longer hidden.
     addClass(target, classname);
