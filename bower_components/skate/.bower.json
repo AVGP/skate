@@ -1,10 +1,17 @@
 {
   "name": "skate",
+  "version": "0.4.0",
+  "main": [
+    "dist/skate.js",
+    "dist/skate.min.js"
+  ],
   "_cacheHeaders": {
+    "ETag": "\"a41498a52b04c23a7fe50075a809f9238f842b0c\"",
     "Content-Type": "application/zip",
-    "Content-Disposition": "attachment; filename=skate-606b7e545ac183e6265f48c0ba67edcdcdfbf0c9.zip"
+    "Content-Disposition": "attachment; filename=skate-performance-exploration.zip"
   },
-  "_source": "https://github.com/treshugart/skate/archive/606b7e545ac183e6265f48c0ba67edcdcdfbf0c9.zip",
+  "_release": "e-tag:a41498a52",
+  "_source": "https://github.com/treshugart/skate/archive/performance-exploration.zip",
   "_target": "*",
-  "_originalSource": "https://github.com/treshugart/skate/archive/606b7e545ac183e6265f48c0ba67edcdcdfbf0c9.zip"
+  "_originalSource": "https://github.com/treshugart/skate/archive/performance-exploration.zip"
 }

@@ -1,6 +1,56 @@
 (function() {
   'use strict';
 
+
+  // Polyfill DOMAttrModified for PhantomJS
+  // --------------------------------------
+
+  HTMLElement.prototype.__setAttribute = HTMLElement.prototype.setAttribute
+  HTMLElement.prototype.setAttribute = function(attrName, newVal)
+  {
+    var prevVal = this.getAttribute(attrName);
+    this.__setAttribute(attrName, newVal);
+    newVal = this.getAttribute(attrName);
+    if (newVal != prevVal)
+    {
+      var evt = document.createEvent("MutationEvent");
+      evt.initMutationEvent(
+        "DOMAttrModified",
+        true,
+        false,
+        this,
+        prevVal || "",
+        newVal || "",
+        attrName,
+        (prevVal == null) ? evt.ADDITION : evt.MODIFICATION
+      );
+      this.dispatchEvent(evt);
+    }
+  };
+
+  HTMLElement.prototype.__removeAttribute = HTMLElement.prototype.removeAttribute;
+  HTMLElement.prototype.removeAttribute = function(attrName)
+  {
+    var prevVal = this.getAttribute(attrName);
+    this.__removeAttribute(attrName);
+    var evt = document.createEvent("MutationEvent");
+    evt.initMutationEvent(
+      "DOMAttrModified",
+      true,
+      false,
+      this,
+      prevVal,
+      "",
+      attrName,
+      evt.REMOVAL
+    );
+    this.dispatchEvent(evt);
+  };
+
+
+  // Setup
+  // -----
+
   function addDivToBody(id) {
     var div = document.createElement('div');
     div.id = id || 'test';
@@ -16,12 +66,14 @@
     }
   }
 
-
   afterEach(function() {
     skate.destroy();
     document.querySelector('body').innerHTML = '';
   });
 
+
+  // Specs
+  // -----
 
   describe('Lifecycle Callbacks', function() {
     it('Should trigger ready before the element is shown.', function(done) {
@@ -173,37 +225,187 @@
     });
   });
 
-  describe('Destroying all instances', function() {
-    it('Should be able to destroy all instances', function() {
-      skate.instances.length.should.equal(0);
+  describe('Destroying all listeners', function() {
+    it('Should be able to destroy all listeners', function() {
+      skate.listeners.length.should.equal(0);
 
-      skate('div', {
+      var Div = skate('div', {
         insert: function(){}
       });
 
-      skate.instances.length.should.equal(1);
+      expect(skate.listeners[Div.listener.id]).to.equal(Div.listener);
       skate.destroy();
-      skate.instances.length.should.equal(0);
+      expect(skate.listeners[Div.listener.id]).to.be.undefined;
 
-      var div = addDivToBody();
+      var div = new Div();
       skate.init(div);
       div.textContent.should.equal('');
     });
   });
 
-  describe('Dynamically resolved elements', function() {
-    it('Should use a function to resolve elements', function() {
-      skate(function(element) {
-        return element.tagName === 'DIV';
-      }, {
-        insert: function(element) {
-          element.textContent = 'yey';
+  describe('Attribute listeners', function() {
+    it('Should listen to changes in specified attributes', function(done) {
+      var init = false;
+      var update = false;
+      var remove = false;
+
+      skate('div', {
+        attrs: {
+          open: {
+            init: function(element, value) {
+              value.should.equal('init');
+            },
+            update: function(element, value, oldValue) {
+              oldValue.should.equal('init');
+              value.should.equal('update');
+            },
+            remove: function(element, value) {
+              value.should.equal('update');
+              done();
+            }
+          }
         }
       });
 
       var div = addDivToBody();
       skate.init(div);
-      div.textContent.should.equal('yey');
+
+      div.setAttribute('open', 'init');
+
+      setTimeout(function() {
+        div.setAttribute('open', 'update');
+      }, 100);
+
+      setTimeout(function() {
+        div.removeAttribute('open');
+      }, 200);
+    });
+
+    it('Should use the update callback as the init callback if no init callback is specified.', function(done) {
+      var init = false;
+      var update = false;
+
+      skate('div', {
+        attrs: {
+          open: {
+            update: function(element, value, oldValue) {
+              value.should.equal('true');
+              expect(oldValue).to.be.undefined;
+              done();
+            }
+          }
+        }
+      });
+
+      var div = addDivToBody();
+      skate.init(div);
+      div.setAttribute('open', 'true');
+    });
+  });
+
+  describe('Extending', function() {
+    it('Instead of using a custom tag, an attribute can be used to signify behaviour.', function() {
+      var init = false;
+
+      skate('datepicker', function() {
+        init = true;
+      });
+
+      var div = document.createElement('div');
+      div.setAttribute('is', 'datepicker');
+      document.body.appendChild(div);
+      skate.init(div);
+
+      init.should.equal(true);
+    });
+  });
+
+  describe('Instantiation', function() {
+    it('Should return a constructor', function() {
+      skate('div').should.be.a.function;
+    });
+
+    it('Should return a new element when constructed.', function() {
+      var Div = skate('div');
+      var div = new Div();
+      div.nodeName.should.equal('DIV');
+    });
+
+    it('Should return a new element when called without "new".', function() {
+      var div = skate('div');
+      div().nodeName.should.equal('DIV');
+    });
+
+    it('Should synchronously initialise the new element.', function() {
+      var called = false;
+      var div = skate('div', {
+        extend: {
+          someMethod: function() {
+            called = true;
+          }
+        }
+      });
+
+      div().someMethod();
+      called.should.equal(true);
+    });
+
+    it('Should call lifecycle callbacks at appropriate times.', function() {
+      var ready = false;
+      var insert = false;
+      var remove = false;
+      var Div = skate('div', {
+        ready: function() {
+          ready = true;
+        },
+        insert: function() {
+          insert = true;
+        },
+        remove: function() {
+          remove = true;
+        }
+      });
+
+      var div = new Div();
+      ready.should.equal(true, 'Should call ready');
+      insert.should.equal(false, 'Should not call insert');
+      remove.should.equal(false, 'Should not call remove');
+
+      document.body.appendChild(div);
+      insert.should.equal(true, 'Should call insert');
+      remove.should.equal(false, 'Should not call remove');
+
+      div.parentNode.removeChild(div);
+      remove.should.equal(true, 'Should call remove');
+    });
+
+    it('Should initialise multiple instances of the same type of element (possible bug).', function() {
+      var numReady = 0;
+      var numInsert = 0;
+      var numRemove = 0;
+      var div = skate('div', {
+        ready: function() {
+          ++numReady;
+        },
+        insert: function() {
+          ++numInsert;
+        },
+        remove: function() {
+          ++numRemove;
+        }
+      });
+
+      var div1 = div();
+      var div2 = div();
+
+      document.body.appendChild(div1);
+      document.body.appendChild(div2);
+      div1.parentNode.removeChild(div1);
+      div2.parentNode.removeChild(div2);
+
+      numReady.should.equal(2);
+      numInsert.should.equal(2);
+      numRemove.should.equal(2);
     });
   });
 })();

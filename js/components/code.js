@@ -1,18 +1,18 @@
-define([
-  'lib/trim',
-  'highlight'
-], function(
-  trim,
-  hjs
-) {
-  return {
-    ready: function(element) {
-      var baseIndent = getIndentLength(element.textContent.split("\n")[0]);
-      var lines = trim(element.innerHTML).split("\n");
+define(['skate', 'lib/trim', 'highlight'], function (skate, trim, hjs) {
+  return skate('skate-code', {
+    restrict: 'skate-code',
+    ready: function (element) {
+      var html = element.textContent;
+      var lines = html.split("\n").filter(function(line) {
+        return line || false;
+      });
+      var baseIndent = getIndentLength(lines[0]);
+      var pre = document.createElement('pre');
 
       element.innerHTML = '';
+      element.appendChild(pre);
 
-      lines.forEach(function(line, index) {
+      lines.forEach(function (line, index) {
         var indent = getIndentLength(line) - baseIndent;
         var num = document.createElement('code');
         var code = document.createElement('code');
@@ -26,20 +26,20 @@ define([
         num.innerHTML = index + 1;
 
         code.className = 'code-line-content';
-        code.innerHTML = setIndentLength(indent) + hjs.highlight(element.getAttribute('code'), line).value;
+        code.innerHTML = setIndentLength(indent) + hjs.highlight(element.getAttribute('lang') || 'html', line).value;
 
-        element.appendChild(num);
-        element.appendChild(code);
-        element.appendChild(nl);
+        pre.appendChild(num);
+        pre.appendChild(code);
+        pre.appendChild(nl);
       });
     }
-  };
+  });
 
-  function getIndentLength(str) {
+  function getIndentLength (str) {
     return str.match(/^\s*/)[0].length;
   }
 
-  function setIndentLength(len) {
+  function setIndentLength (len) {
     return len > 0 ? new Array(len + 1).join(' ') : '';
   }
 });

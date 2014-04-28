@@ -1,40 +1,53 @@
-define(['skate'], function(skate) {
-  return function(parent) {
-    var selector = parent.getAttribute('data-toc-selector') || 'h2, h3, h4, h5, h6';
-    var lastSequence = 0;
-    var index = 0;
+define(['skate'], function (skate) {
+  return skate('skate-toc', {
+    restrict: 'ul.skate-toc',
+    insert: function (element) {
+      [].forEach.call(document.querySelectorAll('.skate-toc-item'), function (item) {
+        element.addItem(item);
+      });
+    },
+    extend: {
+      lastTocItemSequence: 0,
+      addItem: function (child) {
+        var parent = this;
+        var sequence = child.tagName.replace('H', '');
 
-    skate(selector, function(child) {
-      var sequence = child.tagName.replace('H', '');
-      var listitem = document.createElement('li');
-      var anchor = document.createElement('a');
-
-      anchor.href = '#' + child.id;
-      anchor.textContent = child.textContent;
-      listitem.appendChild(anchor);
-
-      if (!lastSequence) {
-        lastSequence = sequence;
-      }
-
-      if (sequence > lastSequence) {
-        for (var a = lastSequence; a < sequence; a++) {
-          var newlist = document.createElement('ul');
-          parent.appendChild(newlist);
-          newlist.appendChild(listitem);
-          parent = newlist;
-        }
-      } else if (sequence < lastSequence) {
-        for (var a = sequence; a < lastSequence; a++) {
-          parent = parent.parentNode;
+        if (!sequence) {
+          return this;
         }
 
-        parent.appendChild(listitem);
-      } else {
-        parent.appendChild(listitem);
-      }
+        var listitem = document.createElement('li');
+        var anchor = document.createElement('a');
 
-      lastSequence = sequence;
-    });
-  };
+        anchor.href = '#' + child.id;
+        anchor.textContent = child.textContent;
+        listitem.appendChild(anchor);
+
+        if (!this.lastTocItemSequence) {
+          this.lastTocItemSequence = sequence;
+        }
+
+        if (sequence > this.lastTocItemSequence) {
+          for (var a = this.lastTocItemSequence; a < sequence; a++) {
+            var newlist = document.createElement('ul');
+            parent.appendChild(newlist);
+            newlist.appendChild(listitem);
+            parent = newlist;
+          }
+        } else if (sequence < this.lastTocItemSequence) {
+          for (var a = sequence; a < this.lastTocItemSequence; a++) {
+            parent = parent.parentNode;
+          }
+
+          parent.appendChild(listitem);
+        } else {
+          parent.appendChild(listitem);
+        }
+
+        this.lastTocItemSequence = sequence;
+
+        return this;
+      }
+    }
+  });
 });

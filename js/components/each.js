@@ -1,6 +1,6 @@
-define(['witness'], function(witness) {
-  return function(element) {
-    var each = window[element.getAttribute('each')];
+define(['skate', 'witness'], function(skate, witness) {
+  return skate('skate-each', function(element) {
+    var each = window[element.getAttribute('skate-each')];
     var observer = witness(each);
     var parent = element.parentNode;
 
@@ -25,8 +25,8 @@ define(['witness'], function(witness) {
 
     function clone() {
       var dolly = element.cloneNode(true);
-      dolly.removeAttribute('each');
+      dolly.removeAttribute('skate-each');
       return dolly;
     }
-  };
+  });
 });
