@@ -79,7 +79,7 @@
     it('Should trigger ready before the element is shown.', function(done) {
       skate('div', {
         ready: function(element) {
-          element.classList.contains('_skate').should.equal(false);
+          assert(element.className.split(' ').indexOf('_skate') === -1, 'Class found');
           done();
         }
       });
@@ -90,7 +90,7 @@
     it('Should trigger insert after the element is shown.', function(done) {
       skate('div', {
         insert: function(element) {
-          element.classList.contains('_skate').should.equal(true);
+          assert(element.className.split(' ').indexOf('_skate') > -1, 'Class not found');
           done();
         }
       });
@@ -160,24 +160,6 @@
     });
   });
 
-  describe('Display none / block / etc behavior', function() {
-    it('Should not be initialised twice', function() {
-      var initialised = 0;
-
-      skate('div', {
-        insert: function() {
-          ++initialised;
-        }
-      });
-
-      var div = addDivToBody();
-      skate.init(div);
-      div.style.display = 'none';
-      div.style.display = 'block';
-      initialised.should.equal(1);
-    });
-  });
-
   describe('Synchronous initialisation', function() {
     it('Should take traversable items', function() {
       var initialised = false;
@@ -205,7 +187,7 @@
       });
 
       skate.init(addDivToBody());
-      initialised.should.equal(1);
+      assert(initialised);
     });
 
     it('Should take a selector', function() {
@@ -221,25 +203,7 @@
       addDivToBody();
 
       skate.init('div');
-      initialised.should.equal(2);
-    });
-  });
-
-  describe('Destroying all listeners', function() {
-    it('Should be able to destroy all listeners', function() {
-      skate.listeners.length.should.equal(0);
-
-      var Div = skate('div', {
-        insert: function(){}
-      });
-
-      expect(skate.listeners[Div.listener.id]).to.equal(Div.listener);
-      skate.destroy();
-      expect(skate.listeners[Div.listener.id]).to.be.undefined;
-
-      var div = new Div();
-      skate.init(div);
-      div.textContent.should.equal('');
+      assert(initialised === 2);
     });
   });
 
@@ -283,23 +247,48 @@
 
     it('Should use the update callback as the init callback if no init callback is specified.', function(done) {
       var init = false;
-      var update = false;
 
       skate('div', {
         attrs: {
           open: {
             update: function(element, value, oldValue) {
-              value.should.equal('true');
-              expect(oldValue).to.be.undefined;
+              if (value === 'init') {
+                init = true;
+                element.setAttribute('open', 'update');
+              }
+
+              if (value === 'update') {
+                init.should.equal(true);
+                done();
+              }
+            }
+          }
+        }
+      });
+
+      document.body.innerHTML = '<div id="attrtest" open="init"></div>';
+    });
+
+    it('Should accept a function insead of an object for the lifecycle definition which triggers both init and update.', function(done) {
+      var init = false;
+
+      skate('div', {
+        attrs: {
+          open: function(element, value, oldValue) {
+            if (value === 'init') {
+              init = true;
+              element.setAttribute('open', 'update');
+            }
+
+            if (value === 'update') {
+              init.should.equal(true);
               done();
             }
           }
         }
       });
 
-      var div = addDivToBody();
-      skate.init(div);
-      div.setAttribute('open', 'true');
+      document.body.innerHTML = '<div id="attrtest" open="init"></div>';
     });
   });
 
@@ -312,7 +301,7 @@
       });
 
       var div = document.createElement('div');
-      div.setAttribute('is', 'datepicker');
+      div.setAttribute('datepicker', 'true');
       document.body.appendChild(div);
       skate.init(div);
 
@@ -350,7 +339,7 @@
       called.should.equal(true);
     });
 
-    it('Should call lifecycle callbacks at appropriate times.', function() {
+    it('Should call lifecycle callbacks at appropriate times.', function(done) {
       var ready = false;
       var insert = false;
       var remove = false;
@@ -372,14 +361,20 @@
       remove.should.equal(false, 'Should not call remove');
 
       document.body.appendChild(div);
+      skate.init(div);
       insert.should.equal(true, 'Should call insert');
       remove.should.equal(false, 'Should not call remove');
 
       div.parentNode.removeChild(div);
-      remove.should.equal(true, 'Should call remove');
+
+      // Mutation Observers are async.
+      setTimeout(function() {
+        remove.should.equal(true, 'Should call remove');
+        done();
+      });
     });
 
-    it('Should initialise multiple instances of the same type of element (possible bug).', function() {
+    it('Should initialise multiple instances of the same type of element (possible bug).', function(done) {
       var numReady = 0;
       var numInsert = 0;
       var numRemove = 0;
@@ -400,12 +395,20 @@
 
       document.body.appendChild(div1);
       document.body.appendChild(div2);
+
+      skate.init([div1, div2]);
+
       div1.parentNode.removeChild(div1);
       div2.parentNode.removeChild(div2);
 
-      numReady.should.equal(2);
-      numInsert.should.equal(2);
-      numRemove.should.equal(2);
+      assert(numReady === 2, 'Ready not called');
+      assert(numInsert === 2, 'Insert not called');
+
+      // Mutation Observers are async.
+      setTimeout(function() {
+        assert(numRemove === 2, 'Remove not called');
+        done();
+      });
     });
   });
 })();

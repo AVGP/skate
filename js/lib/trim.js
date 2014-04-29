@@ -1,5 +1,7 @@
 define(function() {
   return function(str) {
-    return str.replace(/^\s+/, '').replace(/\s+$/, '');
+    if (str) {
+      return str.replace(/^\s+/, '').replace(/\s+$/, '');
+    }
   };
 });

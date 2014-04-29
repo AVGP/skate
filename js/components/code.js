@@ -2,7 +2,7 @@ define(['skate', 'lib/trim', 'highlight'], function (skate, trim, hjs) {
   return skate('skate-code', {
     restrict: 'skate-code',
     ready: function (element) {
-      var html = element.textContent;
+      var html = element.innerHTML;
       var lines = html.split("\n");
 
       // Trim leading empty lines.
@@ -41,11 +41,20 @@ define(['skate', 'lib/trim', 'highlight'], function (skate, trim, hjs) {
         pre.appendChild(code);
         pre.appendChild(nl);
       });
+    },
+    attrs: {
+      title: function (element, value) {
+        var title = document.createElement('div');
+        title.textContent = value;
+        element.parentNode.insertBefore(title, element);
+      }
     }
   });
 
   function getIndentLength (str) {
-    return str.match(/^\s*/)[0].length;
+    if (str) {
+      return str.match(/^\s*/)[0].length;
+    }
   }
 
   function setIndentLength (len) {
