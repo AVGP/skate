@@ -1,6 +1,6 @@
 define(['skate'], function (skate) {
   return skate('skate-toc', {
-    restrict: 'ul.skate-toc',
+    type: skate.types.CLASS,
     insert: function (element) {
       [].forEach.call(document.querySelectorAll('.skate-toc-item'), function (item) {
         element.addItem(item);

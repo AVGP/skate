@@ -1,6 +1,6 @@
 define(['skate'], function(skate) {
   return skate('skate-heading-link', {
-    restrict: 'h2, h3, h4, h5, h6',
+    type: skate.types.ATTR,
     insert: function(element) {
       var a = document.createElement('a');
 

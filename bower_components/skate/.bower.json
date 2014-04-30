@@ -6,12 +6,12 @@
     "dist/skate.min.js"
   ],
   "_cacheHeaders": {
-    "ETag": "\"013e1c9426209f102f4c1b929d4ecb94181650d5\"",
+    "ETag": "\"5435ad42cbeeda88af267b08f53b3ca51aecca4b\"",
     "Content-Type": "application/zip",
-    "Content-Disposition": "attachment; filename=skate-013e1c9426209f102f4c1b929d4ecb94181650d5.zip"
+    "Content-Disposition": "attachment; filename=skate-5435ad42cbeeda88af267b08f53b3ca51aecca4b.zip"
   },
-  "_release": "e-tag:013e1c942",
-  "_source": "https://github.com/treshugart/skate/archive/013e1c9426209f102f4c1b929d4ecb94181650d5.zip",
+  "_release": "e-tag:5435ad42c",
+  "_source": "https://github.com/treshugart/skate/archive/5435ad42cbeeda88af267b08f53b3ca51aecca4b.zip",
   "_target": "*",
-  "_originalSource": "https://github.com/treshugart/skate/archive/013e1c9426209f102f4c1b929d4ecb94181650d5.zip"
+  "_originalSource": "https://github.com/treshugart/skate/archive/5435ad42cbeeda88af267b08f53b3ca51aecca4b.zip"
 }

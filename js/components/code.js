@@ -1,6 +1,6 @@
 define(['skate', 'lib/trim', 'highlight'], function (skate, trim, hjs) {
   return skate('skate-code', {
-    restrict: 'skate-code',
+    type: skate.types.TAG,
     ready: function (element) {
       var html = element.innerHTML;
       var lines = html.split("\n");
