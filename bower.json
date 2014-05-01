@@ -6,7 +6,7 @@
     "highlightjs": "~8.0.0",
     "less": "~1.6.2",
     "requirejs": "~2.1.10",
-    "skate": "https://github.com/treshugart/skate/archive/5435ad42cbeeda88af267b08f53b3ca51aecca4b.zip",
+    "skate": "~0.4.0",
     "witness": "~0.1.1"
   }
 }

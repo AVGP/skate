@@ -5,13 +5,14 @@
     "dist/skate.js",
     "dist/skate.min.js"
   ],
-  "_cacheHeaders": {
-    "ETag": "\"5435ad42cbeeda88af267b08f53b3ca51aecca4b\"",
-    "Content-Type": "application/zip",
-    "Content-Disposition": "attachment; filename=skate-5435ad42cbeeda88af267b08f53b3ca51aecca4b.zip"
+  "homepage": "https://github.com/treshugart/skate",
+  "_release": "0.4.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.4.0",
+    "commit": "a6eddd6ba68709a6578d561d3edc945f1cdd8e18"
   },
-  "_release": "e-tag:5435ad42c",
-  "_source": "https://github.com/treshugart/skate/archive/5435ad42cbeeda88af267b08f53b3ca51aecca4b.zip",
-  "_target": "*",
-  "_originalSource": "https://github.com/treshugart/skate/archive/5435ad42cbeeda88af267b08f53b3ca51aecca4b.zip"
+  "_source": "git://github.com/treshugart/skate.git",
+  "_target": "~0.4.0",
+  "_originalSource": "skate"
 }
