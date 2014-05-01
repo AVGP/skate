@@ -1,16 +1,16 @@
 {
   "name": "skate",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "main": [
     "dist/skate.js",
     "dist/skate.min.js"
   ],
   "homepage": "https://github.com/treshugart/skate",
-  "_release": "0.4.2",
+  "_release": "0.4.3",
   "_resolution": {
     "type": "version",
-    "tag": "0.4.2",
-    "commit": "44dc415161d4b81a4acfb26ab2bf85245dbd92a2"
+    "tag": "0.4.3",
+    "commit": "619af69b015dbdb085acc5ea44dbd066451391e4"
   },
   "_source": "git://github.com/treshugart/skate.git",
   "_target": "~0.4.0",
